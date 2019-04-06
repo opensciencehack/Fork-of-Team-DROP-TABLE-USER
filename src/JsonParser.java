@@ -10,20 +10,11 @@ public class JsonParser {
 
 	private final String DATA_FOLDER = "TweetData/";
 	
-	public static void main(String[] args) throws IOException {
-		JsonParser jp = new JsonParser();
-		ArrayList<JsonNode> allTweets = jp.parseJson();
-		ArrayList<JsonNode> allUniqueTweets = new ArrayList<>();
-		
-		for(JsonNode j : allTweets) {
-            if(j.get("retweeted_status") == null) {
-                allUniqueTweets.add(j);
-			}
-        }
-		System.out.println("all tweets: " + allTweets.size());
-		System.out.println("unique tweets: " + allUniqueTweets.size());
-		jp.writeJson(allUniqueTweets, "unique_tweets");
-	}
+	// public static void main(String[] args) throws IOException {
+	// 	JsonParser jp = new JsonParser();
+	// 	ArrayList<JsonNode> uniqueTweets = jp.parseUniqueTweets();
+	// 	jp.writeJson(uniqueTweets, "outputFile");
+	// }
     
     public ArrayList<JsonNode> parseJson() throws IOException {
         File dataFile = new File(DATA_FOLDER + "diabetes_tweets-array.json");
@@ -34,9 +25,18 @@ public class JsonParser {
         return new ArrayList<JsonNode>(Arrays.asList(j));
     }
 
+	private ArrayList<JsonNode> parseUniqueTweets() throws IOException {
+		ArrayList<JsonNode> allTweets = parseJson();
+		ArrayList<JsonNode> allUniqueTweets = new ArrayList<>();
+		
+		for(JsonNode j : allTweets) {
+            if(j.get("retweeted_status") == null) {
+                allUniqueTweets.add(j);
+			}
+		}
+		return allUniqueTweets;
+	}
     
-
-
     /**
      * 
      * @param tweets
