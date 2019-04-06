@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JsonParser {
@@ -12,23 +13,36 @@ public class JsonParser {
     public static void main(String[] args) {
     	try {
     		JsonParser jp = new JsonParser();
-    		ArrayList<Tweet> tweets = jp.parseJson();
-    		jp.writeJson(tweets, "truncatedJson");
+    		jp.parseJson();
+    		//jp.writeJson(tweets, "truncatedJson");
+
     	}
     	catch(IOException e) {
     		e.printStackTrace();
     	}
     }
     
-    public ArrayList<Tweet> parseJson() throws IOException {
+    public void parseJson() throws IOException {
         File dataFile = new File(DATA_FOLDER + "diabetes_tweets.json");
 
         ObjectMapper oMapper = new ObjectMapper();
-        
-        return oMapper.readValue(dataFile, new TypeReference<ArrayList<Tweet>>() {
-		});
+
+		File parsedTweetFile = new File(DATA_FOLDER + "parsed_tweets.json");
+
+		// Construct a tweet object
+		JsonNode node = oMapper.readTree(dataFile);
+		Tweet tweet = new Tweet(node);
+
+		// Write out tweet object as json
+		JsonNode tweetNode = oMapper.convertValue(tweet, JsonNode.class);
+
+		oMapper.writeValue(parsedTweetFile, tweetNode);
     }
-    
+
+    private void optimizeJSONFile() {
+
+	}
+
     /**
      * 
      * @param tweets
