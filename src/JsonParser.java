@@ -8,25 +8,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class JsonParser {
 
 	private final String DATA_FOLDER = "TweetData/";
-	
-    public static void main(String[] args) {
-    	try {
-    		JsonParser jp = new JsonParser();
-    		ArrayList<Tweet> tweets = jp.parseJson();
-    		jp.writeJson(tweets, "truncatedJson");
-    	}
-    	catch(IOException e) {
-    		e.printStackTrace();
-    	}
-    }
     
-    public ArrayList<Tweet> parseJson() throws IOException {
-        File dataFile = new File(DATA_FOLDER + "diabetes_tweets.json");
-
-        ObjectMapper oMapper = new ObjectMapper();
+    public ArrayList<JsonNode> parseJson() throws IOException {
+        File dataFile = new File(DATA_FOLDER + "diabetes_tweets-array.json");
         
-        return oMapper.readValue(dataFile, new TypeReference<ArrayList<Tweet>>() {
-		});
+        ObjectMapper oMapper = new ObjectMapper();
+        JsonNode[] j = oMapper.readValue(dataFile, JsonNode[].class);
+        return new ArrayList<JsonNode>(Arrays.asList(j));
     }
     
     /**
