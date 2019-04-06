@@ -4,10 +4,7 @@ public class User {
 	
 	private String id;
 	
-	private String name;
-	
 	private String screenName;
-	
 	private int followerCount;
 	
 	private int tweetCount;
@@ -16,10 +13,11 @@ public class User {
 	
 	private int retweetCount;
 	
-	public User(String id, boolean reTweet)
+	public User(String id, boolean reTweet, String screenName)
 	{
 		this.id = id;
 		followerCount = 0;
+		this.screenName = screenName;
 		if(reTweet) 
 		{
 			retweetCount = 1;
@@ -62,5 +60,10 @@ public class User {
 	public int getRetweet()
 	{
 		return retweetCount;
+	}
+	
+	public String getScreenName()
+	{
+		return screenName;
 	}
 }

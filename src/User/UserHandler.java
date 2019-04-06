@@ -67,13 +67,15 @@ public class UserHandler {
 	{
 		ArrayList<User> userList = new ArrayList<User>();
 		boolean found = false;
-		String id;
+		String id, info, screenName;
 		for(JsonNode currentRow : jsNode)
 		{
 			found = false;
-			id = currentRow.get("user").toString();
-			id = id.substring(id.indexOf(':')+1, id.indexOf(','));
+			info = currentRow.get("user").toString();
+		
+			id = info.substring(info.indexOf(':')+1, info.indexOf(','));
 			
+
 			for(User user : userList)
 			{
 				if(user.getId().equals(id))
@@ -92,13 +94,14 @@ public class UserHandler {
 			}
 			if(!found)
 			{
+				screenName = info.substring(info.indexOf("screen_name")+14, info.indexOf("\",\"location"));
 				if(currentRow.get("retweeted_status") != null)
 				{
-					userList.add(new User(id, true));
+					userList.add(new User(id, true, screenName));
 				}
 				else
 				{
-					userList.add(new User(id, false));
+					userList.add(new User(id, false,screenName));
 				}
 
 			}
