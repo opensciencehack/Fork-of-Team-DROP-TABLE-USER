@@ -1,21 +1,23 @@
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class JsonParser {
+public class jsonParser {
 
 	private final String DATA_FOLDER = "TweetData/";
     
-    public ArrayList<Tweet> parseJson() throws IOException {
-        File dataFile = new File(DATA_FOLDER + "diabetes_tweets.json");
-
-        ObjectMapper oMapper = new ObjectMapper();
+    public ArrayList<JsonNode> parseJson() throws IOException {
+        File dataFile = new File(DATA_FOLDER + "diabetes_tweets-array.json");
         
-        return oMapper.readValue(dataFile, new TypeReference<ArrayList<Tweet>>() {
-		});
+        ObjectMapper oMapper = new ObjectMapper();
+        JsonNode[] j = oMapper.readValue(dataFile, JsonNode[].class);
+        return new ArrayList<JsonNode>(Arrays.asList(j));
     }
     
     /**
