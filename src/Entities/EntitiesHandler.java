@@ -10,7 +10,7 @@ import java.util.Set;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-import Questions.User;
+import User.User;
 
 public class EntitiesHandler{
 	
