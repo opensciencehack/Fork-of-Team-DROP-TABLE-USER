@@ -35,7 +35,7 @@ public class JsonParser {
 	 * @throws IOException
 	 */
 	private void writeTweetsWithoutStopWords(ArrayList<JsonNode> tweets) throws IOException {
-		PrintWriter pw = new PrintWriter(DATA_FOLDER + "/tweetsWithoutStopwords.txt");
+		PrintWriter pw = new PrintWriter(DATA_FOLDER + "/tweetsWithoutStopwords2.txt");
 		
 		ArrayList<String> stopwords = parseTextFile(new File("stopwords-sv.txt"));
 		for(JsonNode j : tweets) {
@@ -50,6 +50,17 @@ public class JsonParser {
 					tweet = tweet.replaceAll(stopword + " ", " ");
 				tweet = tweet.replaceAll(" " + stopword + " ", " ");
 			}
+			
+			//used to replace links
+			String[] words = tweet.split(" ");
+			for(String word : words) {
+				word.replaceAll("\\", "");
+				if(word.startsWith("https://"))
+					tweet.replaceAll(word, "");
+				else if(word.startsWith("http://"))
+					tweet.replaceAll(word, "");
+			}
+			
 			pw.println(tweet);
 		}
 		pw.close();
