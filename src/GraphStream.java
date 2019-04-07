@@ -19,14 +19,14 @@ public class GraphStream {
 	public static void main(String[] args) throws IOException {
 
 		GraphStream gs = new GraphStream();
-		File file = new File("TweetData/tweetsWithoutStopwords_partial.txt");
+		File file = new File("TweetData/tweetsWithoutStopwords_partial50.txt");
 		
 		ArrayList<String> tweets = new JsonParser().parseTextFile(file);
 
 		gs.drawGraph(tweets);
 	}
 
-	public void drawGraph(ArrayList<String> tweets) {		
+	public void drawGraph(ArrayList<String> tweets) {
 		Graph graph = new MultiGraph("g");
 		
 		// String[] tweets = { };
@@ -52,24 +52,30 @@ public class GraphStream {
 		for(int tweetId = 0; tweetId < tweets.size(); tweetId ++) {
 			ArrayList<String> uniqueTweetWords = new ArrayList<>();
 			
-			Node tweetNode  = graph.addNode("tId" + tweetId);
-			tweetNodes.add(tweetNode);
-			tweetNode.addAttribute("ui.style", "shape:circle;fill-color: red;size: 5px;");
+//			Node tweetNode  = graph.addNode("tId" + tweetId);
+//			tweetNodes.add(tweetNode);
+			// tweetNode.addAttribute("ui.style", "shape:circle;fill-color: red;size: 5px;");
 			// tweetNode.addAttribute("ui.label", tweetId);
 			String[] words = tweets.get(tweetId).split(" ");
 			for(String word : words) {
-				if(!allWords.contains(word)) {
-					allWords.add(word);
-					Node wordNode = graph.addNode(word);
-					wordNode.addAttribute("ui.style", "shape:circle;fill-color: blue;size: 5px;");
-					// wordNode.addAttribute("ui.label", word);
-				}
-				if(!uniqueTweetWords.contains(word)) {
-					uniqueTweetWords.add(word);
-					if(graph.getEdge("tId" + tweetId + word) == null) {
-						graph.addEdge("tId" + tweetId + word, "tId" + tweetId, word);
+				
+				
+				for(String word2 : words) {
+					if(!allWords.contains(word2)) {
+						allWords.add(word2);
+						Node wordNode = graph.addNode(word2);
+//						 wordNode.addAttribute("ui.label", word2);
+						 wordNode.addAttribute("ui.style", "shape:circle;fill-color: blue;size: 5px;");
 					}
-				}
+					if(graph.getEdge(word + word2) == null) {
+						graph.addEdge(word + word2, word, word2);
+					}
+				}		
+				
+//				if(!uniqueTweetWords.contains(word)) {
+//					uniqueTweetWords.add(word);
+//					}
+//				}
 			}
 		}
 
