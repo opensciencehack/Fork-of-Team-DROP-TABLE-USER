@@ -1,0 +1,39 @@
+		public String getUserAllTweets(String id)
+	{
+		String returnString = null;
+		for(User user : userList)
+		{
+			if(user.getId().equals(id))
+			{
+				int TweetCount = user.getTweetCount();
+				int RetweetCount = user.getRetweet();
+				String returnstring = TweetCount+":"+RetweetCount;
+			}
+		}
+		return returnString;
+	}
+	public void compareTweets(ArrayList<JsonNode> jsNode)
+	{
+		ArrayList<User> userList = new ArrayList<User>();
+		String[] consumerList=null,contributorList=null;
+		boolean found = false;
+		String id, info, screenName;
+		JsonNode infoNode;
+		int Consumers=0,Contributors=0;
+		for(JsonNode currentRow : jsNode)
+		{
+			found = false;
+			info = currentRow.get("user").toString();
+			infoNode=currentRow.get("user");
+			id = info.substring(info.indexOf(':')+1, info.indexOf(','));
+			String[] UserTweet=getUserAllTweets(id).split(":");
+			if (Integer.parseInt(UserTweet[0])>Integer.parseInt(UserTweet[1])) {
+				contributorList[Contributors++]=infoNode.get("screen_name").toString();
+			}
+			else {
+				contributorList[Consumers++]=infoNode.get("screen_name").toString();
+			}
+		}
+		
+		
+	}
